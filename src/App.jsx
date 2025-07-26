@@ -1,50 +1,81 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import MapPanel from './components/MapPanel';
 import DeviceList from './components/DeviceList';
-import { ThemeProvider } from './context/ThemeContext';
+import Login from './components/Login';
+import ErrorBoundary from './components/ErrorBoundary';
 import './styles/App.css';
 
 function App() {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [listOpen, setListOpen] = useState(true);
-  const [listHeight, setListHeight] = useState(300);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [deviceListHeight, setDeviceListHeight] = useState(300);
+  const [isDeviceListOpen, setIsDeviceListOpen] = useState(true);
 
-  const toggleSidebar = useCallback(() => {
-    setSidebarOpen(prev => !prev);
-  }, []);
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
-  const toggleList = useCallback(() => {
-    setListOpen(prev => !prev);
-  }, []);
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+    document.documentElement.setAttribute('data-theme', isDarkMode ? 'light' : 'dark');
+  };
 
-  const handleListResize = useCallback((newHeight) => {
-    setListHeight(Math.max(200, Math.min(500, newHeight)));
-  }, []);
+  const handleLogin = (userData) => {
+    setUser(userData);
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    setIsLoggedIn(false);
+  };
+
+  const toggleDeviceList = () => {
+    setIsDeviceListOpen(!isDeviceListOpen);
+  };
+
+  const handleDeviceListResize = (newHeight) => {
+    setDeviceListHeight(newHeight);
+  };
+
+  if (!isLoggedIn) {
+    return (
+      <ErrorBoundary>
+        <Login onLogin={handleLogin} />
+      </ErrorBoundary>
+    );
+  }
 
   return (
-    <ThemeProvider>
+    <ErrorBoundary>
       <div className="app">
-        <Header onToggleSidebar={toggleSidebar} />
-        <div className="main-content">
-          <Sidebar isOpen={sidebarOpen} />
-          <div className={`content-area ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
-            <MapPanel 
-              listOpen={listOpen} 
-              listHeight={listHeight}
-            />
-            <DeviceList 
-              isOpen={listOpen}
-              height={listHeight}
-              sidebarOpen={sidebarOpen}
-              onToggle={toggleList}
-              onResize={handleListResize}
-            />
-          </div>
+      <Header 
+        isSidebarOpen={isSidebarOpen} 
+        toggleSidebar={toggleSidebar} 
+        toggleTheme={toggleTheme}
+        isDarkMode={isDarkMode}
+        user={user}
+        onLogout={handleLogout}
+      />
+      <div className="main-content">
+        <Sidebar isOpen={isSidebarOpen} />
+        <div className={`content-area ${isSidebarOpen ? 'sidebar-open' : ''}`}>
+          <MapPanel listOpen={isDeviceListOpen} listHeight={deviceListHeight} sidebarOpen={isSidebarOpen} />
+          <DeviceList 
+            listOpen={isDeviceListOpen}
+            listHeight={deviceListHeight}
+            onToggle={toggleDeviceList}
+            onResize={handleDeviceListResize}
+            sidebarOpen={isSidebarOpen}
+          />
         </div>
       </div>
-    </ThemeProvider>
+      </div>
+    </ErrorBoundary>
   );
 }
 

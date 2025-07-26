@@ -1,9 +1,8 @@
 .map-panel {
   flex: 1;
   background: var(--bg-surface);
-  border-radius: 12px;
-  margin: var(--spacing-medium);
-  margin-bottom: var(--spacing-small);
+  border-radius: 0;
+  margin: 0;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
   overflow: hidden;
   position: relative;
@@ -24,7 +23,7 @@
 .leaflet-map {
   width: 100%;
   height: 100%;
-  border-radius: 12px;
+  border-radius: 0;
 }
 
 /* Custom Device Markers */

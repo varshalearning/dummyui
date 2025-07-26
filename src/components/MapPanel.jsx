@@ -1,42 +1,64 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { MapContainer, TileLayer } from 'react-leaflet';
+import { MapContainer, TileLayer, useMap } from 'react-leaflet';
 import SearchField from './SearchField';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
-import { initializeMap, resizeMap } from '../utils/mapUtils';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-geosearch/dist/geosearch.css';
 import '../styles/MapPanel.css';
 
-const MapPanel = ({ listOpen, listHeight }) => {
-  const mapRef = useRef(null);
-  const leafletMapRef = useRef(null);
-  const [map, setMap] = useState(null);
-
+const DynamicTileLayer = () => {
+  const [isDark, setIsDark] = useState(false);
+  
   useEffect(() => {
-    // Initialize map on first render
-    if (mapRef.current && !leafletMapRef.current) {
-      leafletMapRef.current = initializeMap(mapRef.current);
-    }
+    const checkTheme = () => {
+      setIsDark(document.documentElement.getAttribute('data-theme') === 'dark');
+    };
+    
+    checkTheme();
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    
+    return () => {
+      observer.disconnect();
+    };
   }, []);
+  
+  return (
+    <TileLayer
+      attribution={isDark ? '&copy; <a href="https://carto.com/">CARTO</a>' : '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'}
+      url={isDark ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png' : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'}
+      updateWhenZooming={false}
+      updateWhenIdle={true}
+    />
+  );
+};
 
+// Component to handle map resize
+const MapResizer = ({ listOpen, listHeight, sidebarOpen }) => {
+  const map = useMap();
+  
   useEffect(() => {
-    // Resize map when panel dimensions change
-    if (leafletMapRef.current) {
-      resizeMap(leafletMapRef.current);
-    }
-  }, [listOpen, listHeight]);
+    const timer = setTimeout(() => {
+      map.invalidateSize();
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, [map, listOpen, listHeight, sidebarOpen]);
+  
+  return null;
+};
+
+const MapPanel = ({ listOpen, listHeight, sidebarOpen }) => {
+  const [map, setMap] = useState(null);
 
   useEffect(() => {
     if (!map) return;
 
-    // Create search provider
     const provider = new OpenStreetMapProvider();
-
-    // Create search control
     const searchControl = new GeoSearchControl({
       provider,
       style: 'bar',
-      showMarker: false, // Disable marker on search
+      showMarker: false,
       showPopup: false,
       autoClose: true,
       retainZoomLevel: false,
@@ -47,9 +69,10 @@ const MapPanel = ({ listOpen, listHeight }) => {
 
     map.addControl(searchControl);
 
-    // Cleanup
     return () => {
-      map.removeControl(searchControl);
+      if (map && searchControl) {
+        map.removeControl(searchControl);
+      }
     };
   }, [map]);
 
@@ -69,12 +92,8 @@ const MapPanel = ({ listOpen, listHeight }) => {
           zoomAnimation={true}
           fadeAnimation={true}
         >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            updateWhenZooming={false}
-            updateWhenIdle={true}
-          />
+          <DynamicTileLayer />
+          <MapResizer listOpen={listOpen} listHeight={listHeight} sidebarOpen={sidebarOpen} />
           <SearchField />
         </MapContainer>
       </div>

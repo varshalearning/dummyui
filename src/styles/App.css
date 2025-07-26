@@ -9,6 +9,10 @@
   --color-text-secondary: #666666;
   --color-border: #E5E7EB;
   
+  /* Brand Gradients */
+  --gradient-primary: linear-gradient(135deg, #0066CC 0%, #00CCFF 100%);
+  --gradient-hover: linear-gradient(135deg, #0074E8 0%, #33D6FF 100%);
+  
   /* Spacing */
   --spacing-micro: 4px;
   --spacing-small: 8px;
@@ -51,13 +55,13 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 }
 
 .main-content {
   flex: 1;
   display: flex;
   overflow: hidden;
+  position: relative;
 }
 
 .content-area {
@@ -65,11 +69,23 @@ body {
   display: flex;
   flex-direction: column;
   transition: margin-left var(--transition-layout);
+  margin-left: 0;
+  overflow: hidden;
+}
+
+.content-area.sidebar-open {
   margin-left: 280px;
 }
 
 .content-area.sidebar-closed {
   margin-left: 0;
+}
+
+/* Ensure map container takes available space */
+.map-container {
+  flex: 1;
+  position: relative;
+  min-height: 0;
 }
 
 /* Responsive Design */

@@ -1,44 +1,22 @@
 import React from 'react';
-import { useTheme } from '../context/ThemeContext';
+import { FiMenu, FiMoon, FiSun } from 'react-icons/fi';
+import UserMenu from './UserMenu';
 import '../styles/Header.css';
 
-const Header = ({ onToggleSidebar }) => {
-  const { isDark, toggleTheme } = useTheme();
-
+const Header = ({ isSidebarOpen, toggleSidebar, toggleTheme, isDarkMode, user, onLogout }) => {
   return (
     <header className="header">
       <div className="header-left">
-        <button 
-          className="menu-button"
-          onClick={onToggleSidebar}
-          aria-label="Toggle sidebar"
-        >
-          <span className="hamburger"></span>
-          <span className="hamburger"></span>
-          <span className="hamburger"></span>
+        <button className="menu-button" onClick={toggleSidebar}>
+          <FiMenu size={20} />
         </button>
-        <nav className="breadcrumb">
-          <span>Dashboard</span>
-          <span className="separator">/</span>
-          <span>Device Management</span>
-        </nav>
+        <h1 className="header-title gradient-text">WeighLink</h1>
       </div>
       <div className="header-right">
-        <button 
-          className="theme-toggle"
-          onClick={toggleTheme}
-          aria-label="Toggle theme"
-        >
-          {isDark ? '☀️' : '🌙'}
+        <button className="theme-button" onClick={toggleTheme}>
+          {isDarkMode ? <FiSun size={20} /> : <FiMoon size={20} />}
         </button>
-        <div className="user-profile">
-          <img 
-            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face"
-            alt="User avatar"
-            className="avatar"
-          />
-          <span className="user-name">John Doe</span>
-        </div>
+        <UserMenu user={user} onLogout={onLogout} />
       </div>
     </header>
   );

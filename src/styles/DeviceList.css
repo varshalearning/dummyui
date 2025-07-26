@@ -1,17 +1,10 @@
 .device-list {
-  background: var(--bg-surface);
-  border-radius: 12px 12px 0 0;
-  margin: 0 var(--spacing-medium) var(--spacing-medium);
-  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-  transition: all var(--transition-panel);
   position: relative;
-  border: 1px solid var(--color-border);
+  background: var(--bg-surface);
+  border-top: 1px solid var(--color-border);
+  min-height: 100px;
+  transition: height 0.1s ease;
   will-change: height;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  perspective: 1000px;
-  transition: height 0.1s linear;
 }
 
 .device-list.open {
@@ -25,6 +18,14 @@
   transform: translateX(-50%);
   z-index: 1000;
   transition: all var(--transition-panel);
+}
+
+.device-list-collapsed.sidebar-open {
+  left: calc(50% + 140px);
+}
+
+.device-list-collapsed.sidebar-closed {
+  left: 50%;
 }
 
 .expand-button {
@@ -139,24 +140,27 @@
 }
 
 .device-list-content {
-  height: calc(100% - 81px); /* Adjusted for header + resize handle */
-  overflow: hidden;
+  height: calc(100% - 20px);
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-small);
 }
 
 .device-list-scroll {
-  height: 100%;
+  flex: 1;
   overflow-y: auto;
-  padding: var(--spacing-small);
+  padding: 0;
 }
 
 .device-card {
   display: flex;
   align-items: center;
-  padding: var(--spacing-medium);
-  margin-bottom: var(--spacing-small);
+  padding: var(--spacing-small);
+  margin-bottom: var(--spacing-micro);
   background: var(--bg-surface);
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: 6px;
   transition: all var(--transition-hover);
   cursor: pointer;
 }
@@ -181,20 +185,20 @@
 }
 
 .device-info h4 {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--color-text-primary);
-  margin-bottom: var(--spacing-micro);
-}
-
-.device-location {
-  font-size: 12px;
-  color: var(--color-text-secondary);
   margin-bottom: 2px;
 }
 
-.device-last-seen {
+.device-location {
   font-size: 11px;
+  color: var(--color-text-secondary);
+  margin-bottom: 1px;
+}
+
+.device-last-seen {
+  font-size: 10px;
   color: var(--color-text-secondary);
   opacity: 0.8;
 }
@@ -207,14 +211,14 @@
 .action-btn {
   background: none;
   border: 1px solid var(--color-border);
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-size: 12px;
   transition: all var(--transition-hover);
 }
 
@@ -290,4 +294,117 @@
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+}
+
+.device-list-handle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 20px;
+  cursor: ns-resize;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--bg-surface);
+  border-top: 1px solid var(--color-border);
+}
+
+.handle-bar {
+  width: 40px;
+  height: 4px;
+  background: var(--color-border);
+  border-radius: 2px;
+}
+
+.device-item {
+  background: var(--bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.device-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.device-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-badge.active {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.inactive {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.status-badge.maintenance {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.device-details {
+  display: flex;
+  gap: 16px;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+
+/* Pagination Styles */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-small);
+}
+
+.pagination-btn {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--color-text-primary);
+  transition: all var(--transition-hover);
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background: var(--color-accent);
+  color: white;
+  border-color: var(--color-accent);
+}
+
+.pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pagination-info {
+  font-size: 10px;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  min-width: 30px;
+  text-align: center;
 }
