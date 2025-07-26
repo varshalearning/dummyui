@@ -5,6 +5,7 @@ const DeviceList = ({ isOpen, height, onToggle, onResize, sidebarOpen }) => {
   const [isDragging, setIsDragging] = useState(false);
   const startY = useRef(0);
   const startHeight = useRef(0);
+  const rafRef = useRef(null);
 
   const devices = [
     { id: 1, name: 'Device Alpha', status: 'online', location: 'Building A', lastSeen: '2 min ago' },
@@ -17,16 +18,25 @@ const DeviceList = ({ isOpen, height, onToggle, onResize, sidebarOpen }) => {
   const handleMouseMove = useCallback((e) => {
     if (!isDragging) return;
     e.preventDefault();
-    const deltaY = startY.current - e.clientY;
-    const newHeight = startHeight.current + deltaY;
-    // Use requestAnimationFrame for smooth resizing
-    requestAnimationFrame(() => {
+
+    // Cancel any pending animation frame
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+    }
+
+    // Schedule the resize with throttling
+    rafRef.current = requestAnimationFrame(() => {
+      const deltaY = startY.current - e.clientY;
+      const newHeight = Math.max(100, startHeight.current + deltaY); // Minimum height of 100px
       onResize(newHeight);
     });
   }, [isDragging, onResize]);
 
   const handleMouseUp = useCallback(() => {
     setIsDragging(false);
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+    }
     document.body.style.cursor = '';
     document.body.style.userSelect = '';
   }, []);
@@ -35,18 +45,16 @@ const DeviceList = ({ isOpen, height, onToggle, onResize, sidebarOpen }) => {
     if (isDragging) {
       document.body.style.cursor = 'ns-resize';
       document.body.style.userSelect = 'none';
-      document.addEventListener('mousemove', handleMouseMove, { passive: false });
+      document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
-    } else {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
     }
 
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
-      document.body.style.cursor = '';
-      document.body.style.userSelect = '';
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
     };
   }, [isDragging, handleMouseMove, handleMouseUp]);
 

@@ -9,6 +9,10 @@
   position: relative;
   transition: height var(--transition-panel);
   will-change: height;
+  transform: translateZ(0); /* Hardware acceleration */
+  backface-visibility: hidden;
+  perspective: 1000;
+  transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .map-container {
@@ -249,6 +253,64 @@
   color: var(--color-accent) !important;
 }
 
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+}
+
+.leaflet-control-geosearch {
+  transition: all 0.3s ease;
+}
+
+.leaflet-control-geosearch.bar {
+  max-width: 400px;
+}
+
+.leaflet-control-geosearch {
+  position: absolute !important;
+  top: 20px !important;
+  left: 20px !important;
+  width: 100% !important;
+  max-width: 400px !important;
+  z-index: 1000 !important;
+}
+
+.leaflet-control-geosearch form {
+  background: var(--bg-surface) !important;
+  border: 1px solid var(--color-border) !important;
+  padding: 12px !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  width: 100% !important;
+}
+
+.leaflet-control-geosearch form input {
+  width: 100% !important;
+  padding: 8px 12px !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  color: var(--color-text-primary) !important;
+}
+
+.leaflet-control-geosearch form .results {
+  margin-top: 8px !important;
+  background: var(--bg-surface) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+.leaflet-control-geosearch form .results > * {
+  padding: 8px 12px !important;
+  cursor: pointer !important;
+}
+
+.leaflet-control-geosearch form .results > *:hover {
+  background: var(--bg-sidebar) !important;
+}
+
+/* Responsive search control */
 @media (max-width: 767px) {
   .map-panel {
     margin: var(--spacing-small);
@@ -275,6 +337,14 @@
   
   .popup-actions {
     flex-direction: column;
+  }
+  
+  .leaflet-control-geosearch.bar {
+    max-width: calc(100% - 20px);
+  }
+  
+  .leaflet-control-geosearch form {
+    padding: 8px;
   }
 }
 
