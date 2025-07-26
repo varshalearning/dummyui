@@ -1,0 +1,95 @@
+Color Palette Strategy
+Light Theme
+
+Primary Background: #FAFAFA (warm white, reduces eye strain)
+Surface/Cards: #FFFFFF with subtle #F5F5F7 borders
+Sidebar: #F8F9FA with glass morphism effect
+Accent: #0066CC (professional blue) with #4285F4 hover states
+Text: #1A1A1A primary, #666666 secondary
+Borders: #E5E7EB for subtle separation
+
+Dark Theme
+
+Primary Background: #0A0A0B (true black alternative)
+Surface/Cards: #1C1C1E with subtle #2C2C2E borders
+Sidebar: #161618 with glass morphism effect
+Accent: #0A84FF (Apple-style blue) with #4A9EFF hover states
+Text: #FFFFFF primary, #8E8E93 secondary
+Borders: #38383A for subtle separation
+
+Layout & Spacing Strategy
+Spacing System (Based on 8px Grid)
+
+Micro: 4px (icon padding)
+Small: 8px (component internal spacing)
+Medium: 16px (between components)
+Large: 24px (section spacing)
+XL: 32px (major layout gaps)
+
+Component Specifications
+Sidebar (Tools Panel)
+
+Width: 280px collapsed, 320px expanded
+Minimum width: 240px when resized
+Smooth accordion-style sections with 300ms ease-out transitions
+Glass morphism background with 10% opacity overlay
+Tool categories: Navigation, Actions, Filters, Analytics, Settings
+
+Header
+
+Height: 64px fixed
+Glass morphism effect with backdrop blur
+Breadcrumb navigation on left, user controls on right
+
+Map Panel
+
+Minimum height: 400px
+Smooth resize handles with 200ms transitions
+Subtle shadow elevation: box-shadow: 0 4px 24px rgba(0,0,0,0.08)
+
+Device List
+
+Collapsible with smooth 250ms slide animation
+Maximum height: 300px with internal scroll
+Card-based layout with hover elevation effects
+
+Modern Effects & Transitions
+Glass Morphism Implementation
+backdrop-filter: blur(20px);
+background: rgba(255, 255, 255, 0.1); // Light theme
+background: rgba(28, 28, 30, 0.7);    // Dark theme
+border: 1px solid rgba(255, 255, 255, 0.2);
+Smooth Transition System
+
+Layout changes: 300ms cubic-bezier(0.4, 0, 0.2, 1)
+Hover states: 150ms ease-out
+Theme switching: 200ms ease-in-out
+Panel resizing: 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94)
+
+Micro-interactions
+
+Subtle scale transforms on clickable elements: transform: scale(0.98)
+Ripple effects on buttons with 400ms fade-out
+Loading states with skeleton screens
+Progressive disclosure animations
+
+Responsive Breakpoints
+
+Desktop: 1200px+ (full layout)
+Tablet: 768px-1199px (sidebar converts to overlay)
+Mobile: <768px (stack layout, bottom navigation)
+
+Accessibility & Performance
+
+Contrast ratios: 4.5:1 minimum, 7:1 for important text
+Focus indicators: 2px solid accent color with 4px offset
+Reduced motion: Respect prefers-reduced-motion
+Keyboard navigation: Full tab order with skip links
+
+Technical Implementation Notes
+
+Use CSS Grid for main layout with fr units for flexibility
+Implement ResizeObserver API for smooth panel resizing
+Use CSS custom properties for seamless theme switching
+Leverage Intersection Observer for performance optimization
+Implement virtual scrolling for large device lists
