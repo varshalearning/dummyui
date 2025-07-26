@@ -1,0 +1,121 @@
+ .header {
+  height: 64px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--spacing-large);
+  position: relative;
+  z-index: 1000;
+  transition: all var(--transition-theme);
+}
+
+[data-theme="dark"] .header {
+  background: rgba(28, 28, 30, 0.7);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-medium);
+}
+
+.menu-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--spacing-small);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  border-radius: 6px;
+  transition: all var(--transition-hover);
+}
+
+.menu-button:hover {
+  background: var(--color-accent);
+  transform: scale(0.98);
+}
+
+.hamburger {
+  width: 20px;
+  height: 2px;
+  background: var(--color-text-primary);
+  border-radius: 1px;
+  transition: all var(--transition-hover);
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+
+.separator {
+  opacity: 0.5;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-medium);
+}
+
+.theme-toggle {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: var(--spacing-small);
+  border-radius: 50%;
+  transition: all var(--transition-hover);
+}
+
+.theme-toggle:hover {
+  background: var(--color-accent);
+  transform: scale(0.98);
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  padding: var(--spacing-small);
+  border-radius: 20px;
+  transition: all var(--transition-hover);
+  cursor: pointer;
+}
+
+.user-profile:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-name {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+@media (max-width: 767px) {
+  .header {
+    padding: 0 var(--spacing-medium);
+  }
+  
+  .user-name {
+    display: none;
+  }
+  
+  .breadcrumb {
+    display: none;
+  }
+}

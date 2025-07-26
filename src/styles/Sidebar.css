@@ -1,0 +1,128 @@
+.sidebar {
+  width: 280px;
+  background: var(--bg-sidebar);
+  backdrop-filter: blur(20px);
+  border-right: 1px solid var(--color-border);
+  position: fixed;
+  left: 0;
+  top: 64px;
+  height: calc(100vh - 64px);
+  transform: translateX(-100%);
+  transition: transform var(--transition-layout);
+  z-index: 999;
+  overflow: hidden;
+}
+
+.sidebar.open {
+  transform: translateX(0);
+}
+
+.sidebar-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-large);
+}
+
+.sidebar-header {
+  margin-bottom: var(--spacing-large);
+}
+
+.sidebar-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.sidebar-sections {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.section {
+  margin-bottom: var(--spacing-medium);
+}
+
+.section-header {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: var(--spacing-small);
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  transition: all var(--transition-hover);
+}
+
+.section-header:hover {
+  background: var(--color-accent);
+  color: white;
+}
+
+.section-header.active {
+  background: var(--color-accent);
+  color: white;
+}
+
+.arrow {
+  font-size: 12px;
+  transition: transform 300ms ease-out;
+}
+
+.arrow.expanded {
+  transform: rotate(180deg);
+}
+
+.section-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 300ms ease-out;
+  margin-top: var(--spacing-micro);
+}
+
+.section-content.expanded {
+  max-height: 200px;
+}
+
+.section-item {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: var(--spacing-small) var(--spacing-medium);
+  text-align: left;
+  cursor: pointer;
+  border-radius: 6px;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  transition: all var(--transition-hover);
+  margin-bottom: 2px;
+}
+
+.section-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-text-primary);
+  transform: translateX(4px);
+}
+
+@media (max-width: 1199px) {
+  .sidebar {
+    width: 100%;
+    transform: translateX(-100%);
+  }
+  
+  .sidebar.open {
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 767px) {
+  .sidebar {
+    top: 64px;
+    height: calc(100vh - 64px);
+  }
+}

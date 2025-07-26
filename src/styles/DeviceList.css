@@ -1,0 +1,288 @@
+.device-list {
+  background: var(--bg-surface);
+  border-radius: 12px 12px 0 0;
+  margin: 0 var(--spacing-medium) var(--spacing-medium);
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: all var(--transition-panel);
+  position: relative;
+  border: 1px solid var(--color-border);
+}
+
+.device-list.open {
+  /* Styles for when list is open */
+}
+
+.device-list-collapsed {
+  position: fixed;
+  bottom: var(--spacing-medium);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  transition: all var(--transition-panel);
+}
+
+.expand-button {
+  background: var(--color-accent);
+  border: none;
+  color: white;
+  padding: var(--spacing-small) var(--spacing-large);
+  border-radius: 25px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 4px 20px rgba(0, 102, 204, 0.3);
+  transition: all var(--transition-hover);
+  backdrop-filter: blur(10px);
+}
+
+.expand-button:hover {
+  background: var(--color-accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(0, 102, 204, 0.4);
+}
+
+.expand-button:active {
+  transform: translateY(0);
+}
+
+.expand-icon {
+  font-size: 12px;
+  transition: transform var(--transition-hover);
+}
+
+.expand-button:hover .expand-icon {
+  transform: translateY(-1px);
+}
+
+.expand-text {
+  white-space: nowrap;
+}
+
+.resize-handle {
+  height: 8px;
+  background: transparent;
+  cursor: ns-resize;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--transition-hover);
+  user-select: none;
+}
+
+.resize-handle:hover,
+.resize-handle.dragging {
+  background: var(--color-accent);
+}
+
+.resize-handle.dragging {
+  cursor: ns-resize;
+}
+
+.resize-indicator {
+  width: 40px;
+  height: 3px;
+  background: var(--color-border);
+  border-radius: 2px;
+  transition: all var(--transition-hover);
+  pointer-events: none;
+}
+
+.resize-handle:hover .resize-indicator,
+.resize-handle.dragging .resize-indicator {
+  background: white;
+  width: 60px;
+}
+
+.device-list-header {
+  padding: var(--spacing-medium);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-surface);
+}
+
+.device-list-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.toggle-button {
+  background: var(--color-accent);
+  border: none;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: all var(--transition-hover);
+}
+
+.toggle-button:hover {
+  background: var(--color-accent-hover);
+  transform: scale(0.95);
+}
+
+.device-list-content {
+  height: calc(100% - 81px); /* Adjusted for header + resize handle */
+  overflow: hidden;
+}
+
+.device-list-scroll {
+  height: 100%;
+  overflow-y: auto;
+  padding: var(--spacing-small);
+}
+
+.device-card {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-medium);
+  margin-bottom: var(--spacing-small);
+  background: var(--bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  transition: all var(--transition-hover);
+  cursor: pointer;
+}
+
+.device-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  border-color: var(--color-accent);
+}
+
+.device-card:active {
+  transform: scale(0.98);
+}
+
+.device-status {
+  margin-right: var(--spacing-medium);
+  font-size: 16px;
+}
+
+.device-info {
+  flex: 1;
+}
+
+.device-info h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-micro);
+}
+
+.device-location {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin-bottom: 2px;
+}
+
+.device-last-seen {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  opacity: 0.8;
+}
+
+.device-actions {
+  display: flex;
+  gap: var(--spacing-small);
+}
+
+.action-btn {
+  background: none;
+  border: 1px solid var(--color-border);
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: all var(--transition-hover);
+}
+
+.action-btn:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: white;
+  transform: scale(0.95);
+}
+
+/* Custom Scrollbar */
+.device-list-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.device-list-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.device-list-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+.device-list-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}
+
+/* Responsive Design */
+@media (max-width: 767px) {
+  .device-list {
+    margin: 0 var(--spacing-small) var(--spacing-small);
+    border-radius: 8px 8px 0 0;
+  }
+  
+  .device-list-collapsed {
+    bottom: var(--spacing-small);
+    left: var(--spacing-small);
+    right: var(--spacing-small);
+    transform: none;
+  }
+  
+  .expand-button {
+    width: 100%;
+    justify-content: center;
+    padding: var(--spacing-medium);
+  }
+  
+  .device-card {
+    padding: var(--spacing-small);
+  }
+  
+  .device-info h4 {
+    font-size: 13px;
+  }
+  
+  .device-actions {
+    flex-direction: column;
+    gap: var(--spacing-micro);
+  }
+  
+  .action-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+}
+
+/* Prevent text selection during drag */
+.resize-handle.dragging,
+.resize-handle.dragging * {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
